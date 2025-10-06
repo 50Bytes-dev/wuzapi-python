@@ -6,6 +6,7 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.delete_message import DeleteMessage
+from ...models.post_chat_delete_response_200 import PostChatDeleteResponse200
 from ...types import Response
 
 
@@ -28,9 +29,13 @@ def _get_kwargs(
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[Any]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[PostChatDeleteResponse200]:
     if response.status_code == 200:
-        return None
+        response_200 = PostChatDeleteResponse200.from_dict(response.json())
+
+        return response_200
 
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
@@ -38,7 +43,9 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[Any]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[PostChatDeleteResponse200]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -51,7 +58,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: DeleteMessage,
-) -> Response[Any]:
+) -> Response[PostChatDeleteResponse200]:
     """Deletes a message sent by user
 
      Deletes a messages sent by the same user
@@ -64,7 +71,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any]
+        Response[PostChatDeleteResponse200]
     """
 
     kwargs = _get_kwargs(
@@ -78,11 +85,11 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
-async def asyncio_detailed(
+def sync(
     *,
     client: AuthenticatedClient,
     body: DeleteMessage,
-) -> Response[Any]:
+) -> Optional[PostChatDeleteResponse200]:
     """Deletes a message sent by user
 
      Deletes a messages sent by the same user
@@ -95,7 +102,33 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any]
+        PostChatDeleteResponse200
+    """
+
+    return sync_detailed(
+        client=client,
+        body=body,
+    ).parsed
+
+
+async def asyncio_detailed(
+    *,
+    client: AuthenticatedClient,
+    body: DeleteMessage,
+) -> Response[PostChatDeleteResponse200]:
+    """Deletes a message sent by user
+
+     Deletes a messages sent by the same user
+
+    Args:
+        body (DeleteMessage):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[PostChatDeleteResponse200]
     """
 
     kwargs = _get_kwargs(
@@ -105,3 +138,31 @@ async def asyncio_detailed(
     response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
+
+async def asyncio(
+    *,
+    client: AuthenticatedClient,
+    body: DeleteMessage,
+) -> Optional[PostChatDeleteResponse200]:
+    """Deletes a message sent by user
+
+     Deletes a messages sent by the same user
+
+    Args:
+        body (DeleteMessage):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        PostChatDeleteResponse200
+    """
+
+    return (
+        await asyncio_detailed(
+            client=client,
+            body=body,
+        )
+    ).parsed

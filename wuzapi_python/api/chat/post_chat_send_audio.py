@@ -6,6 +6,7 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.message_audio import MessageAudio
+from ...models.post_chat_send_audio_response_200 import PostChatSendAudioResponse200
 from ...types import Response
 
 
@@ -28,9 +29,13 @@ def _get_kwargs(
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[Any]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[PostChatSendAudioResponse200]:
     if response.status_code == 200:
-        return None
+        response_200 = PostChatSendAudioResponse200.from_dict(response.json())
+
+        return response_200
 
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
@@ -38,7 +43,9 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[Any]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[PostChatSendAudioResponse200]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -51,7 +58,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: MessageAudio,
-) -> Response[Any]:
+) -> Response[PostChatSendAudioResponse200]:
     """Sends an audio message
 
      Sends an audio message (must be base64 encoded in opus format, mime type audio/ogg)
@@ -64,7 +71,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any]
+        Response[PostChatSendAudioResponse200]
     """
 
     kwargs = _get_kwargs(
@@ -78,11 +85,11 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
-async def asyncio_detailed(
+def sync(
     *,
     client: AuthenticatedClient,
     body: MessageAudio,
-) -> Response[Any]:
+) -> Optional[PostChatSendAudioResponse200]:
     """Sends an audio message
 
      Sends an audio message (must be base64 encoded in opus format, mime type audio/ogg)
@@ -95,7 +102,33 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any]
+        PostChatSendAudioResponse200
+    """
+
+    return sync_detailed(
+        client=client,
+        body=body,
+    ).parsed
+
+
+async def asyncio_detailed(
+    *,
+    client: AuthenticatedClient,
+    body: MessageAudio,
+) -> Response[PostChatSendAudioResponse200]:
+    """Sends an audio message
+
+     Sends an audio message (must be base64 encoded in opus format, mime type audio/ogg)
+
+    Args:
+        body (MessageAudio):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[PostChatSendAudioResponse200]
     """
 
     kwargs = _get_kwargs(
@@ -105,3 +138,31 @@ async def asyncio_detailed(
     response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
+
+async def asyncio(
+    *,
+    client: AuthenticatedClient,
+    body: MessageAudio,
+) -> Optional[PostChatSendAudioResponse200]:
+    """Sends an audio message
+
+     Sends an audio message (must be base64 encoded in opus format, mime type audio/ogg)
+
+    Args:
+        body (MessageAudio):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        PostChatSendAudioResponse200
+    """
+
+    return (
+        await asyncio_detailed(
+            client=client,
+            body=body,
+        )
+    ).parsed

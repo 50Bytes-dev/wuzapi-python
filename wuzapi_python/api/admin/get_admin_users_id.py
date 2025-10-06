@@ -5,35 +5,28 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.create_user import CreateUser
-from ...models.user import User
+from ...models.get_admin_users_id_response_200 import GetAdminUsersIdResponse200
 from ...types import Response
 
 
 def _get_kwargs(
-    *,
-    body: CreateUser,
+    id: str,
 ) -> dict[str, Any]:
-    headers: dict[str, Any] = {}
-
     _kwargs: dict[str, Any] = {
-        "method": "post",
-        "url": "/admin/users",
+        "method": "get",
+        "url": f"/admin/users/{id}",
     }
 
-    _kwargs["json"] = body.to_dict()
-
-    headers["Content-Type"] = "application/json"
-
-    _kwargs["headers"] = headers
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[User]:
-    if response.status_code == 201:
-        response_201 = User.from_dict(response.json())
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[GetAdminUsersIdResponse200]:
+    if response.status_code == 200:
+        response_200 = GetAdminUsersIdResponse200.from_dict(response.json())
 
-        return response_201
+        return response_200
 
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
@@ -41,7 +34,9 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[User]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[GetAdminUsersIdResponse200]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -51,27 +46,27 @@ def _build_response(*, client: Union[AuthenticatedClient, Client], response: htt
 
 
 def sync_detailed(
+    id: str,
     *,
     client: AuthenticatedClient,
-    body: CreateUser,
-) -> Response[User]:
-    """Create a new user
+) -> Response[GetAdminUsersIdResponse200]:
+    """Get user by ID
 
-     Add a new user to the database.
+     Retrieve a specific user by their ID from the database.
 
     Args:
-        body (CreateUser):
+        id (str):  Example: 4e4942c7dee1deef99ab8fd9f7350de5.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[User]
+        Response[GetAdminUsersIdResponse200]
     """
 
     kwargs = _get_kwargs(
-        body=body,
+        id=id,
     )
 
     response = client.get_httpx_client().request(
@@ -82,53 +77,53 @@ def sync_detailed(
 
 
 def sync(
+    id: str,
     *,
     client: AuthenticatedClient,
-    body: CreateUser,
-) -> Optional[User]:
-    """Create a new user
+) -> Optional[GetAdminUsersIdResponse200]:
+    """Get user by ID
 
-     Add a new user to the database.
+     Retrieve a specific user by their ID from the database.
 
     Args:
-        body (CreateUser):
+        id (str):  Example: 4e4942c7dee1deef99ab8fd9f7350de5.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        User
+        GetAdminUsersIdResponse200
     """
 
     return sync_detailed(
+        id=id,
         client=client,
-        body=body,
     ).parsed
 
 
 async def asyncio_detailed(
+    id: str,
     *,
     client: AuthenticatedClient,
-    body: CreateUser,
-) -> Response[User]:
-    """Create a new user
+) -> Response[GetAdminUsersIdResponse200]:
+    """Get user by ID
 
-     Add a new user to the database.
+     Retrieve a specific user by their ID from the database.
 
     Args:
-        body (CreateUser):
+        id (str):  Example: 4e4942c7dee1deef99ab8fd9f7350de5.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[User]
+        Response[GetAdminUsersIdResponse200]
     """
 
     kwargs = _get_kwargs(
-        body=body,
+        id=id,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -137,28 +132,28 @@ async def asyncio_detailed(
 
 
 async def asyncio(
+    id: str,
     *,
     client: AuthenticatedClient,
-    body: CreateUser,
-) -> Optional[User]:
-    """Create a new user
+) -> Optional[GetAdminUsersIdResponse200]:
+    """Get user by ID
 
-     Add a new user to the database.
+     Retrieve a specific user by their ID from the database.
 
     Args:
-        body (CreateUser):
+        id (str):  Example: 4e4942c7dee1deef99ab8fd9f7350de5.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        User
+        GetAdminUsersIdResponse200
     """
 
     return (
         await asyncio_detailed(
+            id=id,
             client=client,
-            body=body,
         )
     ).parsed

@@ -5,6 +5,7 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.get_group_invitelink_response_200 import GetGroupInvitelinkResponse200
 from ...types import UNSET, Response, Unset
 
 
@@ -30,9 +31,13 @@ def _get_kwargs(
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[Any]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[GetGroupInvitelinkResponse200]:
     if response.status_code == 200:
-        return None
+        response_200 = GetGroupInvitelinkResponse200.from_dict(response.json())
+
+        return response_200
 
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
@@ -40,7 +45,9 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[Any]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[GetGroupInvitelinkResponse200]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -54,7 +61,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     group_jid: str,
     reset: Union[Unset, bool] = UNSET,
-) -> Response[Any]:
+) -> Response[GetGroupInvitelinkResponse200]:
     """Get Group Invite Link
 
      Gets the invite link for a group, optionally resetting it to create a new/different one
@@ -68,7 +75,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any]
+        Response[GetGroupInvitelinkResponse200]
     """
 
     kwargs = _get_kwargs(
@@ -83,12 +90,12 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
-async def asyncio_detailed(
+def sync(
     *,
     client: AuthenticatedClient,
     group_jid: str,
     reset: Union[Unset, bool] = UNSET,
-) -> Response[Any]:
+) -> Optional[GetGroupInvitelinkResponse200]:
     """Get Group Invite Link
 
      Gets the invite link for a group, optionally resetting it to create a new/different one
@@ -102,7 +109,36 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any]
+        GetGroupInvitelinkResponse200
+    """
+
+    return sync_detailed(
+        client=client,
+        group_jid=group_jid,
+        reset=reset,
+    ).parsed
+
+
+async def asyncio_detailed(
+    *,
+    client: AuthenticatedClient,
+    group_jid: str,
+    reset: Union[Unset, bool] = UNSET,
+) -> Response[GetGroupInvitelinkResponse200]:
+    """Get Group Invite Link
+
+     Gets the invite link for a group, optionally resetting it to create a new/different one
+
+    Args:
+        group_jid (str):
+        reset (Union[Unset, bool]):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[GetGroupInvitelinkResponse200]
     """
 
     kwargs = _get_kwargs(
@@ -113,3 +149,34 @@ async def asyncio_detailed(
     response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
+
+async def asyncio(
+    *,
+    client: AuthenticatedClient,
+    group_jid: str,
+    reset: Union[Unset, bool] = UNSET,
+) -> Optional[GetGroupInvitelinkResponse200]:
+    """Get Group Invite Link
+
+     Gets the invite link for a group, optionally resetting it to create a new/different one
+
+    Args:
+        group_jid (str):
+        reset (Union[Unset, bool]):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        GetGroupInvitelinkResponse200
+    """
+
+    return (
+        await asyncio_detailed(
+            client=client,
+            group_jid=group_jid,
+            reset=reset,
+        )
+    ).parsed

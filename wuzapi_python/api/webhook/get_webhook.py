@@ -5,6 +5,7 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.get_webhook_response_200 import GetWebhookResponse200
 from ...types import Response
 
 
@@ -17,9 +18,13 @@ def _get_kwargs() -> dict[str, Any]:
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[Any]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[GetWebhookResponse200]:
     if response.status_code == 200:
-        return None
+        response_200 = GetWebhookResponse200.from_dict(response.json())
+
+        return response_200
 
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
@@ -27,7 +32,9 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[Any]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[GetWebhookResponse200]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -39,7 +46,7 @@ def _build_response(*, client: Union[AuthenticatedClient, Client], response: htt
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Any]:
+) -> Response[GetWebhookResponse200]:
     """Shows webhook
 
      Gets the configured webhook and subscribed events.
@@ -61,7 +68,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any]
+        Response[GetWebhookResponse200]
     """
 
     kwargs = _get_kwargs()
@@ -73,10 +80,10 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
-async def asyncio_detailed(
+def sync(
     *,
     client: AuthenticatedClient,
-) -> Response[Any]:
+) -> Optional[GetWebhookResponse200]:
     """Shows webhook
 
      Gets the configured webhook and subscribed events.
@@ -98,7 +105,40 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any]
+        GetWebhookResponse200
+    """
+
+    return sync_detailed(
+        client=client,
+    ).parsed
+
+
+async def asyncio_detailed(
+    *,
+    client: AuthenticatedClient,
+) -> Response[GetWebhookResponse200]:
+    """Shows webhook
+
+     Gets the configured webhook and subscribed events.
+
+    ## Webhook
+
+    The following _webhook_ endpoints are used to get or set the webhook that will be called whenever a
+    message or event is received. Available event types are:
+
+    * Message
+    * ReadReceipt
+    * Presence
+    * HistorySync
+    * ChatPresence
+    * All (subscribes to all event types)
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[GetWebhookResponse200]
     """
 
     kwargs = _get_kwargs()
@@ -106,3 +146,38 @@ async def asyncio_detailed(
     response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
+
+async def asyncio(
+    *,
+    client: AuthenticatedClient,
+) -> Optional[GetWebhookResponse200]:
+    """Shows webhook
+
+     Gets the configured webhook and subscribed events.
+
+    ## Webhook
+
+    The following _webhook_ endpoints are used to get or set the webhook that will be called whenever a
+    message or event is received. Available event types are:
+
+    * Message
+    * ReadReceipt
+    * Presence
+    * HistorySync
+    * ChatPresence
+    * All (subscribes to all event types)
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        GetWebhookResponse200
+    """
+
+    return (
+        await asyncio_detailed(
+            client=client,
+        )
+    ).parsed

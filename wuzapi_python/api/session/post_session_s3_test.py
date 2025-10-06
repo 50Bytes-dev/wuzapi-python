@@ -1,10 +1,11 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any, Optional, Union, cast
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.post_session_s3_test_response_200 import PostSessionS3TestResponse200
 from ...types import Response
 
 
@@ -17,15 +18,21 @@ def _get_kwargs() -> dict[str, Any]:
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[Any]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[Any, PostSessionS3TestResponse200]]:
     if response.status_code == 200:
-        return None
+        response_200 = PostSessionS3TestResponse200.from_dict(response.json())
+
+        return response_200
 
     if response.status_code == 400:
-        return None
+        response_400 = cast(Any, None)
+        return response_400
 
     if response.status_code == 500:
-        return None
+        response_500 = cast(Any, None)
+        return response_500
 
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
@@ -33,7 +40,9 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[Any]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[Any, PostSessionS3TestResponse200]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -45,7 +54,7 @@ def _build_response(*, client: Union[AuthenticatedClient, Client], response: htt
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Any]:
+) -> Response[Union[Any, PostSessionS3TestResponse200]]:
     """Test S3 Connection
 
      Tests the S3 connection using the current configuration to ensure it's working properly.
@@ -55,7 +64,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any]
+        Response[Union[Any, PostSessionS3TestResponse200]]
     """
 
     kwargs = _get_kwargs()
@@ -67,10 +76,10 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
-async def asyncio_detailed(
+def sync(
     *,
     client: AuthenticatedClient,
-) -> Response[Any]:
+) -> Optional[Union[Any, PostSessionS3TestResponse200]]:
     """Test S3 Connection
 
      Tests the S3 connection using the current configuration to ensure it's working properly.
@@ -80,7 +89,28 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any]
+        Union[Any, PostSessionS3TestResponse200]
+    """
+
+    return sync_detailed(
+        client=client,
+    ).parsed
+
+
+async def asyncio_detailed(
+    *,
+    client: AuthenticatedClient,
+) -> Response[Union[Any, PostSessionS3TestResponse200]]:
+    """Test S3 Connection
+
+     Tests the S3 connection using the current configuration to ensure it's working properly.
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Union[Any, PostSessionS3TestResponse200]]
     """
 
     kwargs = _get_kwargs()
@@ -88,3 +118,26 @@ async def asyncio_detailed(
     response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
+
+async def asyncio(
+    *,
+    client: AuthenticatedClient,
+) -> Optional[Union[Any, PostSessionS3TestResponse200]]:
+    """Test S3 Connection
+
+     Tests the S3 connection using the current configuration to ensure it's working properly.
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Union[Any, PostSessionS3TestResponse200]
+    """
+
+    return (
+        await asyncio_detailed(
+            client=client,
+        )
+    ).parsed

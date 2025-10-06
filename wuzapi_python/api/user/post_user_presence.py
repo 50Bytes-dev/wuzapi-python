@@ -5,6 +5,7 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.post_user_presence_response_200 import PostUserPresenceResponse200
 from ...models.user_presence import UserPresence
 from ...types import Response
 
@@ -28,12 +29,17 @@ def _get_kwargs(
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[Any]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[Any, PostUserPresenceResponse200]]:
     if response.status_code == 200:
-        return None
+        response_200 = PostUserPresenceResponse200.from_dict(response.json())
+
+        return response_200
 
     if response.status_code == 400:
-        return None
+        response_400 = response.json()
+        return response_400
 
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
@@ -41,7 +47,9 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[Any]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[Any, PostUserPresenceResponse200]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -54,7 +62,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: UserPresence,
-) -> Response[Any]:
+) -> Response[Union[Any, PostUserPresenceResponse200]]:
     """Send user global presence
 
      Sends user presence Available or Unavailable
@@ -67,7 +75,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any]
+        Response[Union[Any, PostUserPresenceResponse200]]
     """
 
     kwargs = _get_kwargs(
@@ -81,11 +89,11 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
-async def asyncio_detailed(
+def sync(
     *,
     client: AuthenticatedClient,
     body: UserPresence,
-) -> Response[Any]:
+) -> Optional[Union[Any, PostUserPresenceResponse200]]:
     """Send user global presence
 
      Sends user presence Available or Unavailable
@@ -98,7 +106,33 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any]
+        Union[Any, PostUserPresenceResponse200]
+    """
+
+    return sync_detailed(
+        client=client,
+        body=body,
+    ).parsed
+
+
+async def asyncio_detailed(
+    *,
+    client: AuthenticatedClient,
+    body: UserPresence,
+) -> Response[Union[Any, PostUserPresenceResponse200]]:
+    """Send user global presence
+
+     Sends user presence Available or Unavailable
+
+    Args:
+        body (UserPresence):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Union[Any, PostUserPresenceResponse200]]
     """
 
     kwargs = _get_kwargs(
@@ -108,3 +142,31 @@ async def asyncio_detailed(
     response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
+
+async def asyncio(
+    *,
+    client: AuthenticatedClient,
+    body: UserPresence,
+) -> Optional[Union[Any, PostUserPresenceResponse200]]:
+    """Send user global presence
+
+     Sends user presence Available or Unavailable
+
+    Args:
+        body (UserPresence):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Union[Any, PostUserPresenceResponse200]
+    """
+
+    return (
+        await asyncio_detailed(
+            client=client,
+            body=body,
+        )
+    ).parsed

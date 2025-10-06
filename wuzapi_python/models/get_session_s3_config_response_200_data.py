@@ -1,0 +1,131 @@
+from collections.abc import Mapping
+from typing import Any, TypeVar, Union
+
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
+
+from ..types import UNSET, Unset
+
+T = TypeVar("T", bound="GetSessionS3ConfigResponse200Data")
+
+
+@_attrs_define
+class GetSessionS3ConfigResponse200Data:
+    """
+    Attributes:
+        enabled (Union[Unset, bool]):  Example: True.
+        endpoint (Union[Unset, str]):  Example: https://s3.amazonaws.com.
+        region (Union[Unset, str]):  Example: us-east-1.
+        bucket (Union[Unset, str]):  Example: my-bucket.
+        access_key (Union[Unset, str]):  Example: ***.
+        path_style (Union[Unset, bool]):
+        public_url (Union[Unset, str]):
+        media_delivery (Union[Unset, str]):  Example: both.
+        retention_days (Union[Unset, int]):  Example: 30.
+    """
+
+    enabled: Union[Unset, bool] = UNSET
+    endpoint: Union[Unset, str] = UNSET
+    region: Union[Unset, str] = UNSET
+    bucket: Union[Unset, str] = UNSET
+    access_key: Union[Unset, str] = UNSET
+    path_style: Union[Unset, bool] = UNSET
+    public_url: Union[Unset, str] = UNSET
+    media_delivery: Union[Unset, str] = UNSET
+    retention_days: Union[Unset, int] = UNSET
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        enabled = self.enabled
+
+        endpoint = self.endpoint
+
+        region = self.region
+
+        bucket = self.bucket
+
+        access_key = self.access_key
+
+        path_style = self.path_style
+
+        public_url = self.public_url
+
+        media_delivery = self.media_delivery
+
+        retention_days = self.retention_days
+
+        field_dict: dict[str, Any] = {}
+        field_dict.update(self.additional_properties)
+        field_dict.update({})
+        if enabled is not UNSET:
+            field_dict["enabled"] = enabled
+        if endpoint is not UNSET:
+            field_dict["endpoint"] = endpoint
+        if region is not UNSET:
+            field_dict["region"] = region
+        if bucket is not UNSET:
+            field_dict["bucket"] = bucket
+        if access_key is not UNSET:
+            field_dict["access_key"] = access_key
+        if path_style is not UNSET:
+            field_dict["path_style"] = path_style
+        if public_url is not UNSET:
+            field_dict["public_url"] = public_url
+        if media_delivery is not UNSET:
+            field_dict["media_delivery"] = media_delivery
+        if retention_days is not UNSET:
+            field_dict["retention_days"] = retention_days
+
+        return field_dict
+
+    @classmethod
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
+        enabled = d.pop("enabled", UNSET)
+
+        endpoint = d.pop("endpoint", UNSET)
+
+        region = d.pop("region", UNSET)
+
+        bucket = d.pop("bucket", UNSET)
+
+        access_key = d.pop("access_key", UNSET)
+
+        path_style = d.pop("path_style", UNSET)
+
+        public_url = d.pop("public_url", UNSET)
+
+        media_delivery = d.pop("media_delivery", UNSET)
+
+        retention_days = d.pop("retention_days", UNSET)
+
+        get_session_s3_config_response_200_data = cls(
+            enabled=enabled,
+            endpoint=endpoint,
+            region=region,
+            bucket=bucket,
+            access_key=access_key,
+            path_style=path_style,
+            public_url=public_url,
+            media_delivery=media_delivery,
+            retention_days=retention_days,
+        )
+
+        get_session_s3_config_response_200_data.additional_properties = d
+        return get_session_s3_config_response_200_data
+
+    @property
+    def additional_keys(self) -> list[str]:
+        return list(self.additional_properties.keys())
+
+    def __getitem__(self, key: str) -> Any:
+        return self.additional_properties[key]
+
+    def __setitem__(self, key: str, value: Any) -> None:
+        self.additional_properties[key] = value
+
+    def __delitem__(self, key: str) -> None:
+        del self.additional_properties[key]
+
+    def __contains__(self, key: str) -> bool:
+        return key in self.additional_properties

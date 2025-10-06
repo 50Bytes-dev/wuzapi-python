@@ -6,6 +6,7 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.message_list import MessageList
+from ...models.post_chat_send_list_response_200 import PostChatSendListResponse200
 from ...types import Response
 
 
@@ -28,9 +29,13 @@ def _get_kwargs(
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[Any]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[PostChatSendListResponse200]:
     if response.status_code == 200:
-        return None
+        response_200 = PostChatSendListResponse200.from_dict(response.json())
+
+        return response_200
 
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
@@ -38,7 +43,9 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[Any]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[PostChatSendListResponse200]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -51,7 +58,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: MessageList,
-) -> Response[Any]:
+) -> Response[PostChatSendListResponse200]:
     """Sends a List message
 
      Sends a List message
@@ -64,7 +71,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any]
+        Response[PostChatSendListResponse200]
     """
 
     kwargs = _get_kwargs(
@@ -78,11 +85,11 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
-async def asyncio_detailed(
+def sync(
     *,
     client: AuthenticatedClient,
     body: MessageList,
-) -> Response[Any]:
+) -> Optional[PostChatSendListResponse200]:
     """Sends a List message
 
      Sends a List message
@@ -95,7 +102,33 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any]
+        PostChatSendListResponse200
+    """
+
+    return sync_detailed(
+        client=client,
+        body=body,
+    ).parsed
+
+
+async def asyncio_detailed(
+    *,
+    client: AuthenticatedClient,
+    body: MessageList,
+) -> Response[PostChatSendListResponse200]:
+    """Sends a List message
+
+     Sends a List message
+
+    Args:
+        body (MessageList):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[PostChatSendListResponse200]
     """
 
     kwargs = _get_kwargs(
@@ -105,3 +138,31 @@ async def asyncio_detailed(
     response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
+
+async def asyncio(
+    *,
+    client: AuthenticatedClient,
+    body: MessageList,
+) -> Optional[PostChatSendListResponse200]:
+    """Sends a List message
+
+     Sends a List message
+
+    Args:
+        body (MessageList):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        PostChatSendListResponse200
+    """
+
+    return (
+        await asyncio_detailed(
+            client=client,
+            body=body,
+        )
+    ).parsed
