@@ -26,14 +26,14 @@ class PostSessionPairphoneResponse200Data:
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if linking_code is not UNSET:
-            field_dict["LinkingCode"] = linking_code
+            field_dict["linking_code"] = linking_code
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        linking_code = d.pop("LinkingCode", UNSET)
+        linking_code = d.pop("linking_code", UNSET)
 
         post_session_pairphone_response_200_data = cls(
             linking_code=linking_code,

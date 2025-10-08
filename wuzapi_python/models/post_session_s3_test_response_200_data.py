@@ -34,22 +34,22 @@ class PostSessionS3TestResponse200Data:
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if details is not UNSET:
-            field_dict["Details"] = details
+            field_dict["details"] = details
         if bucket is not UNSET:
-            field_dict["Bucket"] = bucket
+            field_dict["bucket"] = bucket
         if region is not UNSET:
-            field_dict["Region"] = region
+            field_dict["region"] = region
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        details = d.pop("Details", UNSET)
+        details = d.pop("details", UNSET)
 
-        bucket = d.pop("Bucket", UNSET)
+        bucket = d.pop("bucket", UNSET)
 
-        region = d.pop("Region", UNSET)
+        region = d.pop("region", UNSET)
 
         post_session_s3_test_response_200_data = cls(
             details=details,

@@ -26,14 +26,14 @@ class PostGroupLeaveResponse200Data:
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if details is not UNSET:
-            field_dict["Details"] = details
+            field_dict["details"] = details
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        details = d.pop("Details", UNSET)
+        details = d.pop("details", UNSET)
 
         post_group_leave_response_200_data = cls(
             details=details,

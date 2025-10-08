@@ -30,18 +30,18 @@ class PostGroupPhotoResponse200Data:
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if details is not UNSET:
-            field_dict["Details"] = details
+            field_dict["details"] = details
         if picture_id is not UNSET:
-            field_dict["PictureID"] = picture_id
+            field_dict["picture_id"] = picture_id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        details = d.pop("Details", UNSET)
+        details = d.pop("details", UNSET)
 
-        picture_id = d.pop("PictureID", UNSET)
+        picture_id = d.pop("picture_id", UNSET)
 
         post_group_photo_response_200_data = cls(
             details=details,

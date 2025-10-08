@@ -81,7 +81,7 @@ from .message_text_context_info import MessageTextContextInfo
 from .message_video import MessageVideo
 from .message_video_context_info import MessageVideoContextInfo
 from .pairphone import Pairphone
-from .post_admin_users_id_response_201 import PostAdminUsersIdResponse201
+from .post_admin_users_response_201 import PostAdminUsersResponse201
 from .post_chat_delete_response_200 import PostChatDeleteResponse200
 from .post_chat_delete_response_200_data import PostChatDeleteResponse200Data
 from .post_chat_downloadaudio_response_200 import PostChatDownloadaudioResponse200
@@ -279,7 +279,7 @@ __all__ = (
     "MessageVideo",
     "MessageVideoContextInfo",
     "Pairphone",
-    "PostAdminUsersIdResponse201",
+    "PostAdminUsersResponse201",
     "PostChatDeleteResponse200",
     "PostChatDeleteResponse200Data",
     "PostChatDownloadaudioResponse200",

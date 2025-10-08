@@ -34,22 +34,22 @@ class PostChatReactResponse200Data:
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if details is not UNSET:
-            field_dict["Details"] = details
+            field_dict["details"] = details
         if id is not UNSET:
-            field_dict["Id"] = id
+            field_dict["id"] = id
         if timestamp is not UNSET:
-            field_dict["Timestamp"] = timestamp
+            field_dict["timestamp"] = timestamp
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        details = d.pop("Details", UNSET)
+        details = d.pop("details", UNSET)
 
-        id = d.pop("Id", UNSET)
+        id = d.pop("id", UNSET)
 
-        timestamp = d.pop("Timestamp", UNSET)
+        timestamp = d.pop("timestamp", UNSET)
 
         post_chat_react_response_200_data = cls(
             details=details,

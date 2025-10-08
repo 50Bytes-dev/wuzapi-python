@@ -30,18 +30,18 @@ class PostSessionProxyResponse200:
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if details is not UNSET:
-            field_dict["Details"] = details
+            field_dict["details"] = details
         if proxy_url is not UNSET:
-            field_dict["ProxyURL"] = proxy_url
+            field_dict["proxy_url"] = proxy_url
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        details = d.pop("Details", UNSET)
+        details = d.pop("details", UNSET)
 
-        proxy_url = d.pop("ProxyURL", UNSET)
+        proxy_url = d.pop("proxy_url", UNSET)
 
         post_session_proxy_response_200 = cls(
             details=details,

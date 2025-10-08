@@ -30,18 +30,18 @@ class PostSessionS3ConfigResponse200Data:
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if details is not UNSET:
-            field_dict["Details"] = details
+            field_dict["details"] = details
         if enabled is not UNSET:
-            field_dict["Enabled"] = enabled
+            field_dict["enabled"] = enabled
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        details = d.pop("Details", UNSET)
+        details = d.pop("details", UNSET)
 
-        enabled = d.pop("Enabled", UNSET)
+        enabled = d.pop("enabled", UNSET)
 
         post_session_s3_config_response_200_data = cls(
             details=details,

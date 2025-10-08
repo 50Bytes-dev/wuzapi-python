@@ -10,11 +10,11 @@ if TYPE_CHECKING:
     from ..models.user import User
 
 
-T = TypeVar("T", bound="PostAdminUsersIdResponse201")
+T = TypeVar("T", bound="PostAdminUsersResponse201")
 
 
 @_attrs_define
-class PostAdminUsersIdResponse201:
+class PostAdminUsersResponse201:
     """
     Attributes:
         code (Union[Unset, int]):  Example: 201.
@@ -64,14 +64,14 @@ class PostAdminUsersIdResponse201:
         else:
             data = User.from_dict(_data)
 
-        post_admin_users_id_response_201 = cls(
+        post_admin_users_response_201 = cls(
             code=code,
             success=success,
             data=data,
         )
 
-        post_admin_users_id_response_201.additional_properties = d
-        return post_admin_users_id_response_201
+        post_admin_users_response_201.additional_properties = d
+        return post_admin_users_response_201
 
     @property
     def additional_keys(self) -> list[str]:

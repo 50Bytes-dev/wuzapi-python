@@ -13,16 +13,16 @@ T = TypeVar("T", bound="PostWebhookResponse200Data")
 class PostWebhookResponse200Data:
     """
     Attributes:
-        webhook_url (Union[Unset, str]):  Example: https://example.net/webhook.
+        webhook (Union[Unset, str]):  Example: https://example.net/webhook.
         events (Union[Unset, list[str]]):  Example: ['Message', 'ReadReceipt'].
     """
 
-    webhook_url: Union[Unset, str] = UNSET
+    webhook: Union[Unset, str] = UNSET
     events: Union[Unset, list[str]] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        webhook_url = self.webhook_url
+        webhook = self.webhook
 
         events: Union[Unset, list[str]] = UNSET
         if not isinstance(self.events, Unset):
@@ -31,22 +31,22 @@ class PostWebhookResponse200Data:
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if webhook_url is not UNSET:
-            field_dict["WebhookURL"] = webhook_url
+        if webhook is not UNSET:
+            field_dict["webhook"] = webhook
         if events is not UNSET:
-            field_dict["Events"] = events
+            field_dict["events"] = events
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        webhook_url = d.pop("WebhookURL", UNSET)
+        webhook = d.pop("webhook", UNSET)
 
-        events = cast(list[str], d.pop("Events", UNSET))
+        events = cast(list[str], d.pop("events", UNSET))
 
         post_webhook_response_200_data = cls(
-            webhook_url=webhook_url,
+            webhook=webhook,
             events=events,
         )
 

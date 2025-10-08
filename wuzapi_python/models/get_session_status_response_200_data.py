@@ -30,18 +30,18 @@ class GetSessionStatusResponse200Data:
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if connected is not UNSET:
-            field_dict["Connected"] = connected
+            field_dict["connected"] = connected
         if logged_in is not UNSET:
-            field_dict["LoggedIn"] = logged_in
+            field_dict["loggedIn"] = logged_in
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        connected = d.pop("Connected", UNSET)
+        connected = d.pop("connected", UNSET)
 
-        logged_in = d.pop("LoggedIn", UNSET)
+        logged_in = d.pop("loggedIn", UNSET)
 
         get_session_status_response_200_data = cls(
             connected=connected,

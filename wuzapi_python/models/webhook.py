@@ -1,8 +1,10 @@
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+
+from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="Webhook")
 
@@ -11,32 +13,30 @@ T = TypeVar("T", bound="Webhook")
 class Webhook:
     """
     Attributes:
-        webhook_url (str):  Example: http://server/webhook.
+        webhook (Union[Unset, str]):  Example: http://server/webhook.
     """
 
-    webhook_url: str
+    webhook: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        webhook_url = self.webhook_url
+        webhook = self.webhook
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "WebhookURL": webhook_url,
-            }
-        )
+        field_dict.update({})
+        if webhook is not UNSET:
+            field_dict["webhook"] = webhook
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        webhook_url = d.pop("WebhookURL")
+        webhook = d.pop("webhook", UNSET)
 
         webhook = cls(
-            webhook_url=webhook_url,
+            webhook=webhook,
         )
 
         webhook.additional_properties = d
