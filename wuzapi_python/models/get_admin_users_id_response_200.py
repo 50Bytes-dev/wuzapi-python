@@ -19,12 +19,12 @@ class GetAdminUsersIdResponse200:
     Attributes:
         code (Union[Unset, int]):  Example: 200.
         success (Union[Unset, bool]):  Example: True.
-        data (Union[Unset, User]):
+        data (Union[Unset, list['User']]):
     """
 
     code: Union[Unset, int] = UNSET
     success: Union[Unset, bool] = UNSET
-    data: Union[Unset, "User"] = UNSET
+    data: Union[Unset, list["User"]] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -32,9 +32,12 @@ class GetAdminUsersIdResponse200:
 
         success = self.success
 
-        data: Union[Unset, dict[str, Any]] = UNSET
+        data: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.data, Unset):
-            data = self.data.to_dict()
+            data = []
+            for data_item_data in self.data:
+                data_item = data_item_data.to_dict()
+                data.append(data_item)
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -57,12 +60,12 @@ class GetAdminUsersIdResponse200:
 
         success = d.pop("success", UNSET)
 
+        data = []
         _data = d.pop("data", UNSET)
-        data: Union[Unset, User]
-        if isinstance(_data, Unset):
-            data = UNSET
-        else:
-            data = User.from_dict(_data)
+        for data_item_data in _data or []:
+            data_item = User.from_dict(data_item_data)
+
+            data.append(data_item)
 
         get_admin_users_id_response_200 = cls(
             code=code,
