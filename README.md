@@ -1,5 +1,5 @@
 # wuzapi-python
-A client library for accessing WUZAPI
+A client library for accessing WUZAPI (https://github.com/50Bytes-dev/wuzapi)
 
 ## Usage
 First, create a client:
