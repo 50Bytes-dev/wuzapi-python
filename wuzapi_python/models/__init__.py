@@ -31,8 +31,6 @@ from .get_group_list_response_200_data_groups_item_participants_item import (
 )
 from .get_session_history_response_200 import GetSessionHistoryResponse200
 from .get_session_history_response_200_data import GetSessionHistoryResponse200Data
-from .get_session_history_response_400 import GetSessionHistoryResponse400
-from .get_session_history_response_500 import GetSessionHistoryResponse500
 from .get_session_qr_response_200 import GetSessionQrResponse200
 from .get_session_qr_response_200_data import GetSessionQrResponse200Data
 from .get_session_s3_config_response_200 import GetSessionS3ConfigResponse200
@@ -231,8 +229,6 @@ __all__ = (
     "GetGroupListResponse200DataGroupsItemParticipantsItem",
     "GetSessionHistoryResponse200",
     "GetSessionHistoryResponse200Data",
-    "GetSessionHistoryResponse400",
-    "GetSessionHistoryResponse500",
     "GetSessionQrResponse200",
     "GetSessionQrResponse200Data",
     "GetSessionS3ConfigResponse200",
