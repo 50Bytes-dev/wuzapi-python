@@ -15,12 +15,12 @@ class PostChatSendTextResponse200Data:
     Attributes:
         details (Union[Unset, str]):  Example: Sent.
         id (Union[Unset, str]):  Example: 90B2F8B13FAC8A9CF6B06E99C7834DC5.
-        timestamp (Union[Unset, str]):  Example: 2022-04-20T12:49:08-03:00.
+        timestamp (Union[Unset, int]):  Example: 1718803748.
     """
 
     details: Union[Unset, str] = UNSET
     id: Union[Unset, str] = UNSET
-    timestamp: Union[Unset, str] = UNSET
+    timestamp: Union[Unset, int] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
