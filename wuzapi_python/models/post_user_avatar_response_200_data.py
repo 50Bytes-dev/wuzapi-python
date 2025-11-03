@@ -42,26 +42,26 @@ class PostUserAvatarResponse200Data:
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if url is not UNSET:
-            field_dict["URL"] = url
+            field_dict["url"] = url
         if id is not UNSET:
-            field_dict["ID"] = id
+            field_dict["id"] = id
         if type_ is not UNSET:
-            field_dict["Type"] = type_
+            field_dict["type"] = type_
         if direct_path is not UNSET:
-            field_dict["DirectPath"] = direct_path
+            field_dict["direct_path"] = direct_path
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        url = d.pop("URL", UNSET)
+        url = d.pop("url", UNSET)
 
-        id = d.pop("ID", UNSET)
+        id = d.pop("id", UNSET)
 
-        type_ = d.pop("Type", UNSET)
+        type_ = d.pop("type", UNSET)
 
-        direct_path = d.pop("DirectPath", UNSET)
+        direct_path = d.pop("direct_path", UNSET)
 
         post_user_avatar_response_200_data = cls(
             url=url,
